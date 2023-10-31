@@ -11,8 +11,6 @@ $ cp backend/.env.example backend/.env
 $ cd frontend && npm install && cd ..
 $ cd backend && npm install && cd ..
 $ docker compose up
-$ docker exec -it loja_backend npx prisma migrate dev
-$ docker exec -it loja_backend npx prisma db seed
 ```
 
 ## Esquema do Banco
@@ -27,15 +25,6 @@ Username: root
 Senha: 123456
 Banco de Dados: lojavirtual
 ```
-
-## Swagger
-```
-URL: http://localhost:3333/api
-```
-
-## Insomnia
-
-O arquivo `backend/.insomnia/Insomnia.json` pode ser importado no Insomnia (API Client) para testar os endpoints do Backend. Para importar os endpoints no Insomnia, acesse a opção Preferences do menu Application, clique na aba Data, e escolha a opção Import Data.
 
 ## Frontend
 ```
