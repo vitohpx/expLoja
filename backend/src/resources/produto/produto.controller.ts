@@ -26,6 +26,7 @@ const create = async (req: Request, res: Response) => {
     const newProduto = await createProduto(produto);
     res.status(201).json(newProduto);
   } catch (e) {
+    console.log(e);
     res.status(500).json(e);
   }
 };

@@ -6,6 +6,29 @@ generator client {
   binaryTargets = ["native", "linux-musl-openssl-3.0.x", "linux-musl"]
 }
 
+model Usuario {
+  id            String      @id @default(uuid()) @db.Char(40)
+  nome          String      @db.VarChar(100)
+  email         String      @unique @db.VarChar(100)
+  senha         String      @db.VarChar(100)
+  TipoUsuario   TipoUsuario @relation(fields: [tipoUsuarioId], references: [id])
+  tipoUsuarioId String      @db.Char(40)
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@map("usuarios")
+}
+
+model TipoUsuario {
+  id        String    @id @default(uuid()) @db.Char(40)
+  rotulo    String    @db.VarChar(10)
+  usuarios  Usuario[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@map("tipos_usuarios")
+}
+
 model Produto {
   id        String   @id @default(uuid()) @db.Char(40)
   nome      String   @unique @db.VarChar(100)
