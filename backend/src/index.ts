@@ -4,10 +4,20 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import { v4 as uuidv4 } from "uuid";
+import swaggerUi from "swagger-ui-express";
+import swaggerFile from "./swagger-doc.json";
 
 import validateEnv from "./utils/validateEnv";
 import setLangCookie from "./middlewares/setLangCookie";
 import router from "./router";
+
+declare module "express-session" {
+  interface SessionData {
+    uid: string;
+    tipoUsuario: string;
+    carrinhoCompras: string[];
+  }
+}
 
 dotenv.config();
 validateEnv();
@@ -28,6 +38,7 @@ app.use(
   })
 );
 app.use(setLangCookie);
+app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use(router);
 
 app.listen(PORT, () => {

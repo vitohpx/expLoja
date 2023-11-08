@@ -16,19 +16,27 @@ async function signup(req: Request, res: Response) {
   }
 }
 
-async function login(req: Request, res: Response) {
+const login = async (req: Request, res: Response) => {
+  const { email, senha } = req.body;
   try {
-    const usuario = await autenticate(req.body);
+    const usuario = await autenticate({ email, senha });
     if (!usuario)
-      return res.status(401).json({ msg: "Email e/ou senha incorretos" });
-    console.log(usuario);
-    res.status(200).json(usuario);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
+      return res.status(401).json({
+        msg: "Email e/ou senha incorretos",
+      });
+    req.session.uid = usuario.id;
+    req.session.tipoUsuario = usuario.tipoUsuarioId;
+    res.status(200).json({ msg: "Usuário autenticado" });
+  } catch (e) {
+    res.status(500).json(e);
   }
-}
+};
 
-async function logout(req: Request, res: Response) {}
+async function logout(req: Request, res: Response) {
+  req.session.destroy((error) => {
+    if (error) return res.status(500).json({ msg: "Erro ao efetuar o logout" });
+    res.status(200).json({ msg: "Usuário deslogado com sucesso" });
+  });
+}
 
 export default { signup, login, logout };
